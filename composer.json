@@ -1,0 +1,24 @@
+{
+  "name": "isaquesb/simple-rest",
+  "description": "Simple Rest Client",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Isaque de Souza",
+      "role": "developer",
+      "email": "isaquesb@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "isaquesb/simple-http": "^1.2",
+    "isaquesb/simple-hydrate": "~0.1"
+  },
+  "autoload" : {
+    "psr-4": {
+      "Simple\\Rest\\": "src"
+    }
+  },
+  "minimum-stability" : "dev",
+  "prefer-stable" : true
+}
