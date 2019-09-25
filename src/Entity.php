@@ -6,17 +6,25 @@ use Simple\Hydrate;
 abstract class Entity extends Hydrate\Entity
 {
     /**
+     * @var string
+     */
+    protected $dateTimeFormat = 'Y-m-d H:i:s';
+
+    /**
      * @param string|\DateTime $val
+     * @param string $format
      * @return \DateTime|null
      */
-    protected function asDateTimeVal($val)
+    protected function asDateTimeVal($val, $format = null)
     {
         if (is_null($val)) {
             return null;
         }
         if (is_string($val)) {
-            $asDate = strlen($val) == 10;
-            return \DateTime::createFromFormat('Y-m-d H:i:s', $asDate ? $val . ' 00:00:00' : $val);
+            $asDate = strlen($val) <= 10;
+            $dateFormat = $format ?: $this->dateTimeFormat;
+            $join = strpos($dateFormat, 'T') ? 'T' : ' ';
+            return \DateTime::createFromFormat($dateFormat, $asDate ? $val . $join . '00:00:00' : $val);
         }
         return $val;
     }
@@ -64,5 +72,17 @@ abstract class Entity extends Hydrate\Entity
             return boolval($val);
         }
         return $val;
+    }
+
+    /**
+     * @param mixed $val
+     * @return string
+     */
+    protected function asString($val)
+    {
+        if (is_null($val)) {
+            return null;
+        }
+        return (string) $val;
     }
 }
