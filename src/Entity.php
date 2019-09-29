@@ -8,7 +8,7 @@ abstract class Entity extends Hydrate\Entity
     /**
      * @var string
      */
-    protected $dateTimeFormat = 'Y-m-d H:i:s';
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @param string|\DateTime $val
@@ -22,7 +22,7 @@ abstract class Entity extends Hydrate\Entity
         }
         if (is_string($val)) {
             $asDate = strlen($val) <= 10;
-            $dateFormat = $format ?: $this->dateTimeFormat;
+            $dateFormat = $format ?: self::DATETIME_FORMAT;
             $join = strpos($dateFormat, 'T') ? 'T' : ' ';
             return \DateTime::createFromFormat($dateFormat, $asDate ? $val . $join . '00:00:00' : $val);
         }
