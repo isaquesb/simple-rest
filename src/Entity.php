@@ -24,9 +24,12 @@ abstract class Entity extends Hydrate\Entity
             $asDate = strlen($val) <= 10;
             $dateFormat = $format ?: self::DATETIME_FORMAT;
             $join = strpos($dateFormat, 'T') ? 'T' : ' ';
-            return \DateTime::createFromFormat($dateFormat, $asDate ? $val . $join . '00:00:00' : $val);
+            $val = \DateTime::createFromFormat($dateFormat, $asDate ? $val . $join . '00:00:00' : $val);
         }
-        return $val;
+        if ($val && ($val instanceof \DateTime)) {
+            return $val;
+        }
+        return null;
     }
 
     /**
@@ -38,10 +41,7 @@ abstract class Entity extends Hydrate\Entity
         if (is_null($val)) {
             return null;
         }
-        if (is_string($val)) {
-            return intval($val);
-        }
-        return $val;
+        return intval($val);
     }
 
     /**
@@ -50,7 +50,7 @@ abstract class Entity extends Hydrate\Entity
      */
     protected function asDecimal($val)
     {
-        if (is_null($val)) {
+        if (is_null($val) || !is_numeric($val)) {
             return null;
         }
         if (is_string($val)) {
@@ -71,7 +71,7 @@ abstract class Entity extends Hydrate\Entity
         if (!is_bool($val)) {
             return boolval($val);
         }
-        return $val;
+        return !!$val;
     }
 
     /**
